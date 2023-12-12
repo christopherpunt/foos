@@ -1,5 +1,5 @@
 from configuration import Configuration
-from teamManager import Team, TeamEnum
+from team import Team, TeamEnum
 
 
 class FoosballGame:
@@ -8,8 +8,13 @@ class FoosballGame:
         self.socketio = socketio
         self.blackTeam = Team(TeamEnum.BLACK)
         self.redTeam = Team(TeamEnum.RED)
+        self.winningTeam = None
 
     def addScore(self, team):
+        if self.isFinished():
+            print('game already finished, cannot change score')
+            return
+
         if (team == TeamEnum.BLACK.name):
             self.blackTeam.addScore()
         elif (team == TeamEnum.RED.name):
@@ -19,6 +24,9 @@ class FoosballGame:
         self.updateGameData()
     
     def removeScore(self, team):
+        if self.isFinished():
+            print('game already finished, cannot change score')
+            return
         if (team == TeamEnum.BLACK.name):
             self.blackTeam.removeScore()
         elif (team == TeamEnum.RED.name):
@@ -41,9 +49,11 @@ class FoosballGame:
             return False
 
     def isFinished(self):
-        if self.blackTeam.getScore() >= Configuration.gameWinningAmount:
+        if self.blackTeam and self.blackTeam.getScore() >= Configuration.gameWinningAmount:
+            self.winningTeam = self.blackTeam
             return True
-        elif self.redTeam.getScore() >= Configuration.gameWinningAmount:
+        elif self.redTeam and self.redTeam.getScore() >= Configuration.gameWinningAmount:
+            self.winningTeam = self.redTeam
             return True
         else:
             return False
@@ -66,9 +76,12 @@ class FoosballGame:
                     self.blackTeam.player2.username if self.blackTeam.player2 else None,
                 ],
                 'score': self.blackTeam.score
-            }
+            },
+            'finished': self.isFinished(),
+            'winningTeam': self.winningTeam.side.name if self.winningTeam else None
         }
     
     def reset(self):
         self.blackTeam.reset()
         self.redTeam.reset()
+        self.winningTeam = None
