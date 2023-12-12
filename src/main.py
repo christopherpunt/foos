@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 from flask_socketio import SocketIO
 from foosballGame import FoosballGame
-from playerManager import PlayerManager
+from player import PlayerManager
 from database import db
 
 app = Flask(__name__)

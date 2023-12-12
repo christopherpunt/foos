@@ -10,6 +10,9 @@ class Team:
         self.player2 = None
         self.score = 0
 
+    def getScore(self):
+        return self.score
+
     def addPlayer(self, player):
         if self.player1 is None:
             self.player1 = player
