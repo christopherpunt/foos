@@ -103,7 +103,6 @@ class PlayerManager:
 
         if player_added:
             print(f"User '{player.username}' joined the game on the '{team}' side.")
-            currentGame.updateGameData()
             return True
         return False
     
