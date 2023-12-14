@@ -15,8 +15,9 @@ db.init_app(app)
 with app.app_context():
     db.create_all()
 
-gameManager = FoosballGameManager(socketio)
-playerManager = PlayerManager(socketio)
+with app.app_context():
+    gameManager = FoosballGameManager(socketio)
+    playerManager = PlayerManager(socketio)
 
 @app.route('/')
 def index():

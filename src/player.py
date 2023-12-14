@@ -1,6 +1,6 @@
 from flask import jsonify
 from foosballGame import TeamEnum
-from database import db
+from database import db, Base
 from sqlalchemy import Integer, String, func
 from sqlalchemy.orm import Mapped, mapped_column
 
